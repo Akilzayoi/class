@@ -1,0 +1,124 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+// 学生类
+class Student {
+public:
+    Student(string name, int age, string id, double score) :
+        name(name), age(age), id(id), score(score) {}
+
+    string getName() const { return name; }
+    int getAge() const { return age; }
+    string getId() const { return id; }
+    double getScore() const { return score; }
+
+    void setName(string name) { this->name = name; }
+    void setAge(int age) { this->age = age; }
+    void setId(string id) { this->id = id; }
+    void setScore(double score) { this->score = score; }
+
+private:
+    string name;    // 姓名
+    int age;        // 年龄
+    string id;      // 学号
+    double score;   // 成绩
+};
+
+// 教师类
+class Teacher {
+public:
+    Teacher(string name, int age, string id, string title) :
+        name(name), age(age), id(id), title(title) {}
+
+    string getName() const { return name; }
+    int getAge() const { return age; }
+    string getId() const { return id; }
+    string getTitle() const { return title; }
+
+    void setName(string name) { this->name = name; }
+    void setAge(int age) { this->age = age; }
+    void setId(string id) { this->id = id; }
+    void setTitle(string title) { this->title = title; }
+
+private:
+    string name;    // 姓名
+    int age;        // 年龄
+    string id;      // 工号
+    string title;   // 职称
+};
+
+// 学生管理类
+class StudentManager {
+public:
+    void addStudent() {
+        string name, id;
+        int age;
+        double score;
+        cout << "Enter student's name: ";
+        cin >> name;
+        cout << "Enter student's age: ";
+        cin >> age;
+        cout << "Enter student's ID: ";
+        cin >> id;
+        cout << "Enter student's score: ";
+        cin >> score;
+        Student student(name, age, id, score);
+        students.push_back(student);
+        cout << "Student added successfully." << endl;
+    }
+
+    void removeStudent() {
+        string id;
+        cout << "Enter student's ID: ";
+        cin >> id;
+        auto it = find_if(students.begin(), students.end(),
+            [id](const Student& s) { return s.getId() == id; });
+        if (it != students.end()) {
+            students.erase(it);
+            cout << "Student removed successfully." << endl;
+        }
+        else {
+            cout << "Student not found." << endl;
+        }
+    }
+
+    void searchStudent() {
+        string id;
+        cout << "Enter student's ID: ";
+        cin >> id;
+        auto it = find_if(students.begin(), students.end(),
+            [id](const Student& s) { return s.getId() == id; });
+        if (it != students.end()) {
+            Student student = *it;
+            cout << "Name: " << student.getName() << endl;
+            cout << "Age: " << student.getAge
+        () << endl;
+        cout << "ID: " << student.getId() << endl;
+        cout << "Score: " << student.getScore() << endl;
+    }
+    else {
+        cout << "Student not found." << endl;
+    }
+}
+
+void modifyScore() {
+    string id;
+    double score;
+    cout << "Enter student's ID: ";
+    cin >> id;
+    auto it = find_if(students.begin(), students.end(),
+        [id](const Student& s) { return s.getId() == id; });
+    if (it != students.end()) {
+        cout << "Enter new score: ";
+        cin >> score;
+        it->setScore(score);
+        cout << "Score modified successfully." << endl;
+    }
+    else {
+        cout << "Student not found." << endl;
+    }
+}
