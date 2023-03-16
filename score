@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// 学生类
+class Student {
+public:
+    Student(string name, double score) : name_(name), score_(score) {}
+    string getName() const { return name_; }
+    double getScore() const { return score_; }
+private:
+    string name_;     // 学生姓名
+    double score_;    // 学生成绩
+};
+
+// 比较函数，按照平均分从高到低排序
+bool compareStudents(const Student& s1, const Student& s2) {
+    return s1.getScore() > s2.getScore();
+}
+
+int main() {
+    vector<Student> students;
+    string name;
+    double score;
+    int num_students;
+    double total_score = 0;
+    double average_score;
+    
+    // 输入学生数目
+    cout << "Enter the number of students: ";
+    cin >> num_students;
+    
+    // 输入学生姓名和成绩，并计算总分
+    for (int i = 0; i < num_students; i++) {
+        cout << "Enter the name of student " << i+1 << ": ";
+        cin >> name;
+        cout << "Enter the score of student " << i+1 << ": ";
+        cin >> score;
+        students.push_back(Student(name, score));
+        total_score += score;
+    }
+    
+    // 计算平均分并输出
+    average_score = total_score / num_students;
+    cout << "The average score is " << average_score << endl;
+    
+    // 按照平均分从高到低排序并输出
+    sort(students.begin(), students.end(), compareStudents);
+    cout << "The students sorted by score are:" << endl;
+    for (const auto& student : students) {
+        cout << student.getName() << " " << student.getScore() << endl;
+    }
+    
+    return 0;
+}
