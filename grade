@@ -1,0 +1,130 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+// 学生成绩类
+class Grade {
+public:
+    Grade(double math, double english, double physics) :
+        math(math), english(english), physics(physics) {}
+
+    double get_math() const { return math; }
+    double get_english() const { return english; }
+    double get_physics() const { return physics; }
+    double get_average() const { return (math + english + physics) / 3.0; }
+
+private:
+    double math, english, physics;
+};
+
+// 学生类
+class Student {
+public:
+    Student(const string& name, const string& id, const string& phone) :
+        name(name), id(id), phone(phone) {}
+
+    const string& get_name() const { return name; }
+    const string& get_id() const { return id; }
+    const string& get_phone() const { return phone; }
+    const Grade& get_grade() const { return grade; }
+    void set_grade(const Grade& grade) { this->grade = grade; }
+
+private:
+    string name, id, phone;
+    Grade grade;
+};
+
+// 学生管理系统类
+class StudentSystem {
+public:
+    void add_student(const Student& student) {
+        students.push_back(student);
+    }
+
+    void remove_student(const string& id) {
+        for (auto it = students.begin(); it != students.end(); ++it) {
+            if (it->get_id() == id) {
+                students.erase(it);
+                break;
+            }
+        }
+    }
+
+    void update_student(const string& id, const Student& student) {
+        for (auto& s : students) {
+            if (s.get_id() == id) {
+                s = student;
+                break;
+            }
+        }
+    }
+
+    const Student* find_student(const string& id) const {
+        for (const auto& s : students) {
+            if (s.get_id() == id) {
+                return &s;
+            }
+        }
+        return nullptr;
+    }
+
+    void add_grade(const string& id, const Grade& grade) {
+        for (auto& s : students) {
+            if (s.get_id() == id) {
+                s.set_grade(grade);
+                break;
+            }
+        }
+    }
+
+    const Grade* find_grade(const string& id) const {
+        for (const auto& s : students) {
+            if (s.get_id() == id) {
+                return &s.get_grade();
+            }
+        }
+        return nullptr;
+    }
+
+private:
+    vector<Student> students;
+};
+
+// 主函数
+int main() {
+    // 初始化学生管理系统
+    StudentSystem sys;
+
+    // 添加学生信息
+    sys.add_student(Student("Tom", "001", "123456"));
+    sys.add_student(Student("Jerry", "002", "234567"));
+
+    // 查询学生信息
+    const Student* s1 = sys.find_student("001");
+    if (s1 != nullptr) {
+        cout << "Found student " << s1->get_name() << ", id = " << s1->get_id() << ", phone = " << s1    ->get_phone() << endl;
+}
+
+// 更新学生信息
+sys.update_student("001", Student("Tom Smith", "001", "111111"));
+
+// 查询学生信息
+const Student* s2 = sys.find_student("001");
+if (s2 != nullptr) {
+    cout << "Found student " << s2->get_name() << ", id = " << s2->get_id() << ", phone = " << s2->get_phone() << endl;
+}
+
+// 录入学生成绩
+sys.add_grade("001", Grade(80.0, 90.0, 85.0));
+sys.add_grade("002", Grade(85.0, 95.0, 90.0));
+
+// 查询学生成绩
+const Grade* g1 = sys.find_grade("001");
+if (g1 != nullptr) {
+    cout << "Found grade of student " << s2->get_name() << ", id = " << s2->get_id() << ": math = " << g1->get_math(} << ", english = " << g1->get_english() << ", physics = " << g1->get_physics() << ", average = " << g1->get_average() << endl;
+}
+
+return 0;
+}
